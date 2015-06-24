@@ -16,16 +16,14 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath "com.netflix.nebula:nebula-clojure-plugin:1.12.2"
     }
 }
 
 apply plugin: 'forge'
-apply plugin: 'nebula-clojure'
 
-version = "1.0"
-group= "io.github.setupminimal.cljsh" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Cljsh"
+version = "0.1-SNAPSHOT"
+group= "io.github.setupminimal.glass" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Glass"
 
 minecraft {
     version = "1.8-11.14.3.1450"

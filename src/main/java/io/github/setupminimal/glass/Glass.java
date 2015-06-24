@@ -1,9 +1,6 @@
-package io.github.setupminimal.cljsh;
+package io.github.setupminimal.glass;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -22,12 +19,12 @@ import org.apache.logging.log4j.Logger;
 import clojure.lang.IFn;
 import clojure.lang.RT;
 
-@Mod(modid = Cljsh.modid, name = Cljsh.name, version = Cljsh.version)
-public class Cljsh {
+@Mod(modid = Glass.modid, name = Glass.name, version = Glass.version)
+public class Glass {
 
-	public static final String modid = "cljsh";
-	public static final String name = "Cljsh";
-	public static final String version = "1.0";
+	public static final String modid = "glass";
+	public static final String name = "Glass";
+	public static final String version = "0.1-SNAPSHOT";
 	
 	public ArrayList<IFn> initCalls = new ArrayList<IFn>();
 	public ArrayList<IFn> postInitCalls = new ArrayList<IFn>();
@@ -35,7 +32,7 @@ public class Cljsh {
 	public static Logger logger;
 
 	@Instance(value = modid)
-	public static Cljsh instance;
+	public static Glass instance;
 
 	public Object execute(String contents) {
 		contents = "(do " + contents + ")";
@@ -47,26 +44,15 @@ public class Cljsh {
 	public void onPreInitialization(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		
-		String path = "./mods/cljsh-mods/";
-		File directory = new File(path);
-		File[] fileListing = directory.listFiles();
-		for (File file : fileListing) {
-			if (file.isFile() && file.getName().endsWith(".mod.clj")) {
-				String contents = "";
-				try {
-					contents = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				IFn mainFunction = (IFn) execute(contents);
-
-				mainFunction.invoke(this);
-				
-				logger.info("Cljsh sucsessfully loaded " + file.getName());
-			}
+		try {
+			RT.loadResourceScript("assets/glass/code/Glass.clj");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		IFn mainFunction = RT.var("io.github.setupminimal.glass.Glass", "main");
+		mainFunction.invoke(this);
+		logger.info("Glass is online!");
 	}
 	
 	@EventHandler
